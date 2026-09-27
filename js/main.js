@@ -2,6 +2,38 @@
 // Mobile menu toggle + accessible FAQ accordion. No tracking, no external calls.
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Light/Dark mode toggle — persisted in localStorage, default is the
+  // original light design (no attribute / no stored value = light).
+  var themeToggle = document.getElementById("theme-toggle");
+  var root = document.documentElement;
+
+  function setTheme(isDark) {
+    if (isDark) {
+      root.setAttribute("data-theme", "dark");
+    } else {
+      root.removeAttribute("data-theme");
+    }
+    if (themeToggle) {
+      themeToggle.setAttribute("aria-pressed", String(isDark));
+      themeToggle.setAttribute(
+        "aria-label",
+        isDark ? "Switch to light mode" : "Switch to dark mode"
+      );
+    }
+    try {
+      localStorage.setItem("bal-theme", isDark ? "dark" : "light");
+    } catch (e) {}
+  }
+
+  if (themeToggle) {
+    // Sync button state with whatever the head script already applied.
+    setTheme(root.getAttribute("data-theme") === "dark");
+
+    themeToggle.addEventListener("click", function () {
+      setTheme(root.getAttribute("data-theme") !== "dark");
+    });
+  }
+
   // Mobile nav toggle
   var menuToggle = document.querySelector(".menu-toggle");
   var siteNav = document.getElementById("site-nav");

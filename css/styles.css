@@ -27,6 +27,31 @@
   --shadow-btn: 0 12px 24px -10px rgba(209, 168, 62, 0.55);
   --container: 720px;
   --gap: clamp(1.5rem, 5vw, 3rem);
+  --card-bg: var(--white);
+  --card-border: transparent;
+  --forwho-yes-bg: rgba(47, 122, 79, 0.08);
+  --forwho-no-bg: rgba(192, 69, 58, 0.06);
+}
+
+/* ---------- Dark mode ----------
+   Default (no attribute) = the original reference design, unchanged.
+   [data-theme="dark"] on <html> swaps the "light" section palette
+   (cream backgrounds, white cards) for a dark equivalent while the
+   navy sections stay as-is — same layout, same content, new colors. */
+:root[data-theme="dark"] {
+  --cream: #161c34;
+  --cream-2: #1d2442;
+  --ink: #f2eee2;
+  --ink-soft: #cdd2ea;
+  --muted-on-cream: #a7acc9;
+  --gold-dark: #e3bd5c;
+  --success: #4ade80;
+  --danger: #f87171;
+  --card-bg: #1f2748;
+  --card-border: rgba(255, 255, 255, 0.08);
+  --shadow-card: 0 18px 40px -20px rgba(0, 0, 0, 0.65);
+  --forwho-yes-bg: rgba(74, 222, 128, 0.12);
+  --forwho-no-bg: rgba(248, 113, 113, 0.1);
 }
 
 * {
@@ -73,6 +98,17 @@ body {
   background: var(--cream);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body,
+.section,
+.pain-list li,
+.case-card,
+.week-card,
+.price-card,
+.faq-item {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 h1, h2, h3, h4 {
@@ -280,8 +316,16 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.75rem;
   padding-top: 0.9rem;
   padding-bottom: 0.9rem;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
 }
 
 .wordmark {
@@ -297,16 +341,36 @@ a {
   color: var(--gold-light);
 }
 
-.menu-toggle {
+.menu-toggle,
+.theme-toggle {
   background: none;
   border: 1px solid var(--navy-line);
   border-radius: var(--radius-sm);
   padding: 0.5rem 0.6rem;
   color: var(--white);
   cursor: pointer;
+  line-height: 0;
 }
 
-.menu-toggle svg {
+.menu-toggle svg,
+.theme-toggle svg {
+  display: block;
+}
+
+.theme-toggle:hover {
+  border-color: var(--gold);
+  color: var(--gold-light);
+}
+
+.theme-toggle .icon-moon {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle .icon-sun {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle .icon-moon {
   display: block;
 }
 
@@ -449,12 +513,22 @@ a {
 }
 
 .pain-list li {
-  background: var(--white);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-left: 4px solid var(--gold);
   border-radius: var(--radius-sm);
   padding: 0.9rem 1.1rem;
   box-shadow: var(--shadow-card);
   font-size: 0.98rem;
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+}
+
+.pain-list li svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--gold-dark);
 }
 
 .pain-close {
@@ -553,7 +627,8 @@ a {
 }
 
 .case-card {
-  background: var(--white);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
   padding: 2rem 1.5rem;
@@ -656,7 +731,8 @@ a {
 }
 
 .week-card {
-  background: var(--white);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-card);
@@ -765,7 +841,7 @@ a {
 
 /* ---------- Pricing ---------- */
 .price-card {
-  background: var(--white);
+  background: var(--card-bg);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
   padding: 2rem 1.5rem;
@@ -837,12 +913,12 @@ a {
 }
 
 .forwho-card--yes {
-  background: rgba(47, 122, 79, 0.08);
+  background: var(--forwho-yes-bg);
   border: 1px solid rgba(47, 122, 79, 0.3);
 }
 
 .forwho-card--no {
-  background: rgba(192, 69, 58, 0.06);
+  background: var(--forwho-no-bg);
   border: 1px solid rgba(192, 69, 58, 0.25);
 }
 
@@ -888,7 +964,8 @@ a {
 }
 
 .faq-item {
-  background: var(--white);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
   overflow: hidden;
@@ -1112,7 +1189,14 @@ a {
 
   .btn,
   .faq-question__icon,
-  .faq-answer {
+  .faq-answer,
+  body,
+  .section,
+  .pain-list li,
+  .case-card,
+  .week-card,
+  .price-card,
+  .faq-item {
     transition: none;
   }
 }
